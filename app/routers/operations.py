@@ -364,7 +364,6 @@ def list_notifications(
             if not recent_admin:
                 notifications.append(
                     models.Notification(
-                        id=-(order.id),
                         user_id=current_user.id,
                         notification_type=NotificationType.DUE_MED,
                         title="Medication due",

@@ -277,7 +277,7 @@ class AppointmentCreate(BaseModel):
 
 
 class NotificationRead(ORMModel):
-    id: int
+    id: int | None
     notification_type: NotificationType
     title: str
     body: str
