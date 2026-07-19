@@ -1,0 +1,1 @@
+"""Nursing home management application."""

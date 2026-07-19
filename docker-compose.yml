@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: nursing_home
+      POSTGRES_USER: nursing
+      POSTGRES_PASSWORD: nursing
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: ""
+      DB_HOST: db
+      DB_NAME: nursing_home
+      DB_USER: nursing
+      DB_PASSWORD: nursing
+      DB_PORT: 5432
+      SECRET_KEY: local-dev-secret-key
+      ACCESS_TOKEN_EXPIRE_MINUTES: 120
+      AUTO_CREATE_SCHEMA: "false"
+    ports:
+      - "8000:8000"
+    command: sh -c "alembic upgrade head && python scripts/seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  postgres_data:
