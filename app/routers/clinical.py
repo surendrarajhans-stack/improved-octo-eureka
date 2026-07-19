@@ -10,7 +10,13 @@ from app import models, schemas
 from app.audit import record_audit
 from app.database import get_db
 from app.deps import CurrentUser, ensure_resident_access, get_resident_or_404, require_roles
-from app.enums import IncidentSeverity, NoteVisibility, NotificationType, Role
+from app.enums import (
+    IncidentSeverity,
+    MedicationAdministrationStatus,
+    NoteVisibility,
+    NotificationType,
+    Role,
+)
 
 router = APIRouter(tags=["clinical"])
 CLINICAL_ROLES = (Role.ADMIN, Role.DOCTOR, Role.NURSE, Role.CAREGIVER)
@@ -134,7 +140,7 @@ def administer_medication(
         **payload.model_dump(exclude={"administered_at"}),
     )
     db.add(administration)
-    if payload.status != "administered":
+    if payload.status != MedicationAdministrationStatus.ADMINISTERED:
         db.add(
             models.Notification(
                 user_id=order.ordered_by_user_id,
@@ -275,7 +281,7 @@ def create_incident(
                 models.Notification(
                     user_id=user_id,
                     notification_type=NotificationType.INCIDENT,
-                    title=f"{payload.severity.title()} incident reported",
+                    title=f"{payload.severity} incident reported",
                     body=payload.description,
                 )
                 for user_id in admin_ids
@@ -311,7 +317,8 @@ def due_medications(
             select(models.MedicationAdministration).where(
                 and_(
                     models.MedicationAdministration.medication_order_id == order.id,
-                    models.MedicationAdministration.status == "administered",
+                    models.MedicationAdministration.status
+                    == MedicationAdministrationStatus.ADMINISTERED,
                     models.MedicationAdministration.scheduled_for >= window_start,
                 )
             )
