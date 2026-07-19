@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "Nursing Home Management System"
-    database_url: str = "sqlite:///./nursing_home.db"
+    database_url: str | None = None
     db_host: str | None = None
     db_name: str | None = None
     db_user: str | None = None

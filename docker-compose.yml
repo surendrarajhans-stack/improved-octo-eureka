@@ -15,7 +15,6 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: ""
       DB_HOST: db
       DB_NAME: nursing_home
       DB_USER: nursing
