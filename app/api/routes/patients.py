@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from pathlib import Path as FilePath
 
@@ -168,7 +169,10 @@ async def upload_document(patient_id: int, request: Request, document: UploadFil
     file_path = data.get("file_path")
     if document is not None:
         content = await document.read()
-        destination = UPLOAD_DIR / f"{patient_id}_{document.filename}"
+        # Sanitize filename: keep only alphanumerics, dots, hyphens, and underscores
+        safe_name = re.sub(r"[^\w.\-]", "_", FilePath(document.filename or "upload").name)
+        # Prevent path traversal by using only the basename
+        destination = UPLOAD_DIR / f"{patient_id}_{safe_name}"
         destination.write_bytes(content)
         file_path = str(destination)
     if not file_path:

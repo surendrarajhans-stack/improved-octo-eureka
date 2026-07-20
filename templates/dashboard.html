@@ -4,7 +4,7 @@
 <div class="row g-3 mb-4">
   {% for card in [
     ("Today's Patients", today_patients, 'primary','fa-user-injured'),
-    ("Today's Revenue", '₹%.2f'|format(today_revenue), 'success','fa-wallet'),
+    ("Today's Revenue", (currency_symbol ~ '%.2f'|format(today_revenue)), 'success','fa-wallet'),
     ("Appointments", total_appointments, 'info','fa-calendar-check'),
     ("Current Admissions", current_admissions, 'warning','fa-bed-pulse'),
     ("Available Beds", available_beds, 'secondary','fa-bed'),

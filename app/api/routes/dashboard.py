@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import require_auth
 from app.api.routes.helpers import render
+from app.config import settings
 from app.database import get_db
 from app.models.appointment import Appointment
 from app.models.billing import Payment
@@ -65,4 +66,5 @@ def dashboard(request: Request, current_user=Depends(require_auth), db: Session 
         current_admissions=current_admissions, available_beds=available_beds, emergency_cases=emergency_cases,
         low_stock_items=low_stock_items, pending_lab_reports=pending_lab_reports, doctor_availability=doctor_availability,
         revenue_chart={"labels": revenue_labels, "data": revenue_data}, patient_chart={"labels": patient_labels, "data": patient_data},
-        department_wise_patients=department_wise_patients, ward_stats=ward_stats, bed_occupancy_rate=bed_occupancy_rate)
+        department_wise_patients=department_wise_patients, ward_stats=ward_stats, bed_occupancy_rate=bed_occupancy_rate,
+        currency_symbol=settings.CURRENCY_SYMBOL)
