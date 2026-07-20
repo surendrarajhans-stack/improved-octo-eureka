@@ -1,0 +1,2 @@
+{% extends "base.html" %}
+{% block content %}<div class="glass-card p-3"><h3>HR Directory</h3><table class="table"><thead><tr><th>Code</th><th>Name</th><th>Designation</th><th>Salary</th></tr></thead><tbody>{% for employee in employees %}<tr><td>{{ employee.employee_code }}</td><td>{{ employee.first_name }} {{ employee.last_name }}</td><td>{{ employee.designation or '-' }}</td><td>{{ employee.salary }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted">No employees.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

@@ -1,0 +1,2 @@
+{% extends "base.html" %}
+{% block content %}<div class="glass-card p-3"><h3>Appointment Calendar</h3><div class="row g-3">{% for appointment in appointments %}<div class="col-md-4"><div class="glass-card p-3"><div class="fw-semibold">{{ appointment.appointment_date }} {{ appointment.appointment_time }}</div><div>Doctor {{ appointment.doctor_id }} • Patient {{ appointment.patient_id }}</div><span class="badge bg-primary">{{ appointment.status }}</span></div></div>{% else %}<div class="col-12 text-muted">No appointments.</div>{% endfor %}</div></div>{% endblock %}

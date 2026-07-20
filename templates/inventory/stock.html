@@ -1,0 +1,2 @@
+{% extends "base.html" %}
+{% block content %}<div class="glass-card p-3"><h3>Inventory Dashboard</h3><table class="table"><thead><tr><th>Name</th><th>Code</th><th>Stock</th><th>Reorder</th></tr></thead><tbody>{% for item in items %}<tr><td>{{ item.name }}</td><td>{{ item.code }}</td><td>{{ item.current_stock }}</td><td>{{ item.reorder_level }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted">No items.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}
