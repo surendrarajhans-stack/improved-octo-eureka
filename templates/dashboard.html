@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-4">
+  {% for card in [
+    ("Today's Patients", today_patients, 'primary','fa-user-injured'),
+    ("Today's Revenue", '₹%.2f'|format(today_revenue), 'success','fa-wallet'),
+    ("Appointments", total_appointments, 'info','fa-calendar-check'),
+    ("Current Admissions", current_admissions, 'warning','fa-bed-pulse'),
+    ("Available Beds", available_beds, 'secondary','fa-bed'),
+    ("Emergency Cases", emergency_cases, 'danger','fa-truck-medical')
+  ] %}
+  <div class="col-md-6 col-xl-4"><div class="card kpi-card {{ card[2] }} glass-card"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><div><div class="small text-white-50">{{ card[0] }}</div><div class="display-6 fw-bold">{{ card[1] }}</div></div><i class="fa-solid {{ card[3] }} fa-2x opacity-75"></i></div></div></div></div>
+  {% endfor %}
+</div>
+<div class="row g-4 mb-4"><div class="col-lg-8"><div class="glass-card p-3"><div class="d-flex justify-content-between"><h5>Revenue Trend</h5><span class="badge bg-primary">Last 7 days</span></div><canvas id="revenueChart" height="120"></canvas></div></div><div class="col-lg-4"><div class="glass-card p-3"><h5>Department Distribution</h5><canvas id="departmentChart" height="220"></canvas></div></div></div>
+<div class="row g-4"><div class="col-lg-8"><div class="glass-card p-3"><div class="d-flex justify-content-between"><h5>Patient Visits</h5><span class="badge bg-secondary">Last 30 days</span></div><canvas id="patientChart" height="110"></canvas></div></div><div class="col-lg-4"><div class="glass-card p-3"><h5>Doctor Availability</h5><div class="table-responsive"><table class="table table-sm align-middle"><tbody>{% for doctor in doctor_availability %}<tr><td>#{{ doctor.id }}</td><td>{{ doctor.specialization }}</td><td><span class="badge bg-{{ 'success' if doctor.is_available else 'secondary' }}">{{ 'Available' if doctor.is_available else 'Busy' }}</span></td></tr>{% endfor %}</tbody></table></div></div></div></div>
+<div class="row g-4 mt-1"><div class="col-lg-4"><div class="glass-card p-3"><h5>Low Stock Alerts</h5><ul class="list-group list-group-flush">{% for item in low_stock_items %}<li class="list-group-item bg-transparent d-flex justify-content-between"><span>{{ item.name }}</span><span class="badge bg-danger">{{ item.current_stock }}</span></li>{% else %}<li class="list-group-item bg-transparent">No low stock alerts.</li>{% endfor %}</ul></div></div><div class="col-lg-4"><div class="glass-card p-3"><h5>Bed Occupancy</h5><p class="text-muted">Current occupancy rate: <strong>{{ bed_occupancy_rate }}%</strong></p>{% for ward in ward_stats %}<div class="mb-2"><div class="d-flex justify-content-between small"><span>{{ ward.name }}</span><span>{{ ward.occupied }}/{{ ward.total }}</span></div><div class="progress"><div class="progress-bar" style="width: {{ ward.rate }}%"></div></div></div>{% endfor %}</div></div><div class="col-lg-4"><div class="glass-card p-3 quick-actions"><h5>Quick Actions</h5><div class="d-grid gap-2"><a class="btn btn-primary" href="/patients/create">Add Patient</a><a class="btn btn-success" href="/appointments/create">Book Appointment</a><a class="btn btn-warning" href="/billing/create">Create Invoice</a><a class="btn btn-dark" href="/ai/dashboard">AI Dashboard</a></div><hr><div class="small text-muted">Pending lab reports: <strong>{{ pending_lab_reports }}</strong></div></div></div></div>
+{% endblock %}
+{% block extra_js %}<script>ChartUtils.initRevenueChart('revenueChart', {{ revenue_chart.labels|tojson }}, {{ revenue_chart.data|tojson }}); ChartUtils.initPatientChart('patientChart', {{ patient_chart.labels|tojson }}, {{ patient_chart.data|tojson }}); ChartUtils.initDepartmentChart('departmentChart', {{ department_wise_patients|map(attribute='label')|list|tojson }}, {{ department_wise_patients|map(attribute='value')|list|tojson }});</script>{% endblock %}

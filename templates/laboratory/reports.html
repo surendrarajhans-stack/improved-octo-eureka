@@ -1,0 +1,2 @@
+{% extends "base.html" %}
+{% block content %}<div class="glass-card p-3"><h3>Lab Reports</h3><table class="table"><thead><tr><th>ID</th><th>Order</th><th>Date</th><th></th></tr></thead><tbody>{% for report in reports %}<tr><td>#{{ report.id }}</td><td>{{ report.order_id }}</td><td>{{ report.report_date }}</td><td><a href="/laboratory/reports/{{ report.id }}" class="btn btn-sm btn-outline-primary">Print</a></td></tr>{% else %}<tr><td colspan="4" class="text-muted text-center">No reports.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}
