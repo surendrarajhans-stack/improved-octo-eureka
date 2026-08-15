@@ -29,24 +29,31 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSON
 @router.get("/manifest.json")
 def manifest_view():
     data = {
+        "id": "/",
         "name": "MedSphere AI Hospital Operating System",
         "short_name": "MedSphere AI",
         "description": "Next-Generation AI Operating System for Clinical Operations and Hospital Governance",
         "start_url": "/",
+        "scope": "/",
         "display": "standalone",
+        "dir": "ltr",
+        "lang": "en",
         "background_color": "#0b0f19",
         "theme_color": "#0d9488",
         "orientation": "portrait-primary",
+        "categories": ["medical", "business", "productivity"],
         "icons": [
             {
-                "src": "/icon-192.png",
+                "src": "https://hospital.technocons.com/icon-192.png",
                 "type": "image/png",
-                "sizes": "192x192"
+                "sizes": "192x192",
+                "purpose": "any maskable"
             },
             {
-                "src": "/icon-512.png",
+                "src": "https://hospital.technocons.com/icon-512.png",
                 "type": "image/png",
-                "sizes": "512x512"
+                "sizes": "512x512",
+                "purpose": "any maskable"
             }
         ]
     }
