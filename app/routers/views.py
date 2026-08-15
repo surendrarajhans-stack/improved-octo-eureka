@@ -44,13 +44,13 @@ def manifest_view():
         "categories": ["medical", "business", "productivity"],
         "icons": [
             {
-                "src": "https://hospital.technocons.com/icon-192.png",
+                "src": "https://hospital.technocons.com/static/launchericon-192x192.png",
                 "type": "image/png",
                 "sizes": "192x192",
                 "purpose": "any maskable"
             },
             {
-                "src": "https://hospital.technocons.com/icon-512.png",
+                "src": "https://hospital.technocons.com/static/launchericon-512x512.png",
                 "type": "image/png",
                 "sizes": "512x512",
                 "purpose": "any maskable"
